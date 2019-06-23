@@ -1,0 +1,529 @@
+program Ran;
+uses crt,Windows;
+var x,y,tx,ty,diem,i,mau,tg:byte;
+    a,chu,lang,key:char;
+    lc,ten,tuoi,dokho:ansistring;
+    tl:boolean;
+
+procedure ve;
+begin
+        gotoxy(3,2);
+        for i:=1 to 76 do write('*');
+        gotoxy(3,23);
+        for i:=1 to 75 do write('*');
+        i:=2;
+        while i<=22 do
+        begin
+                inc(i);
+                gotoxy(3,i);
+                write('*');
+                gotoxy(78,i);
+                write('*');
+        end;
+end;
+
+procedure thoat;
+begin
+        clrscr;
+        if lang='e' then SetConsoleTitle('The SNAKE GAME[v1.1 Beta]: Exit game')
+        else SetConsoleTitle('Game RAN SAN MOI [v1.1 Beta]: Thoat game');
+        gotoxy(15,5); textcolor(10);
+        if lang='e' then
+        write('The SNAKE GAME...')
+        else write('Tro choi RAN SAN MOI...') ;
+        delay(1000);
+        gotoxy(15,6); textcolor(4);
+        if lang='e' then
+        write('Will be exited in 5 seconds...')
+        else write('Se thoat trong 5 giay...');
+        delay(1000);
+        gotoxy(15,7); textcolor(9);
+        if lang='e' then
+        write('Thank you for playing this game ',ten,'! Goodbye!')
+        else write('Cam on ban ',ten,' da choi tro choi nay! Tam biet ban!');
+        delay(1000);
+        gotoxy(15,8); textcolor(3);
+        if lang='e' then
+        write('Made by bien2004official (Nguyen Van Bien)')
+        else write('Duoc tao boi bien2004official (Nguyen Van Bien)');
+        delay(5000);
+        halt;
+end;
+
+procedure khongnhanxet;
+begin
+        if lang='e' then
+        write('Comments is not available in this difficulty: ')
+        else write('Nhan xet khong co san cho do kho ma ban chon: ');
+        if dokho='1' then
+        begin
+                textcolor(9);
+                if lang='e' then
+                write('Very easy')
+                else write('Rat de')
+        end
+        else if dokho='2' then
+        begin
+                textcolor(1);
+                if lang='e' then
+                write('Easy')
+                else write('De')
+        end;
+        exit
+end;
+
+procedure ktdiem;
+begin
+        if diem<10 then
+        begin
+                textcolor(red);
+                if lang='e' then
+                write('You played so badly! You only scored ',diem,' points ',ten,'!?')
+                else write('Ban choi do qua! Chi co ',diem,' diem thoi a ban ',ten,'!?');
+                exit
+        end
+        else if (diem>=10) and (diem<20) then
+                if (dokho<>'1') and (dokho<>'2') then
+                begin
+                        textcolor(14);
+                        if lang='e' then
+                        write('You played good, but it is not enough. Just ',diem,' points. Try it again.')
+                        else write('Ban choi cung duoc do! Duoc ',diem,' diem roi ',ten,'! Co len!');
+                        exit
+                end
+                else
+                begin
+                        khongnhanxet;
+                        exit
+                end
+        else if (diem<=20) and (diem<30) then
+                if (dokho<>'1') and (dokho<>'2') then
+                begin
+                        textcolor(1);
+                        if lang='e' then
+                        write('You played good, ',ten,'! You scored ',diem,' points!')
+                        else write('Ban choi kha lam ',ten,'! Duoc ',diem,' diem roi!');
+                        exit
+                end
+                else
+                begin
+                        khongnhanxet;
+                        exit
+                end
+        else if (diem<=30) and (diem<50) then
+                if (dokho<>'1') and (dokho<>'2') then
+                begin
+                        textcolor(9);
+                        if lang='e' then
+                        write('You played really good, ',ten,'! You scored ',diem,' points!!')
+                        else write('Ban gioi that do ',ten,'! Duoc ',diem,' diem roi!!');
+                        exit
+                end
+                else
+                begin
+                        khongnhanxet;
+                        exit
+                end
+        else if (diem<=50) and (diem<100) then
+                if (dokho<>'1') and (dokho<>'2') then
+                begin
+                        textcolor(9);
+                        if lang='e' then
+                        write('You are an extreme player ',ten,'! You scored ',diem,' scores!!!')
+                        else write('Ban la cao thu do ',ten,'! Duoc ',diem,' diem roi!!!');
+                        exit
+                end
+                else
+                begin
+                        khongnhanxet;
+                        exit
+                end
+        else
+        if (dokho<>'1') and (dokho<>'2') then
+        begin
+                textcolor(6);
+                if lang='e' then
+                write('Maybe ',ten,' is the player that can be in the highscore list because ',ten,' scored ',diem,' points !!!!')
+                else write('Co le ',ten,' la nguoi choi co the lap ki luc vi da duoc ',diem,' diem !!!!');
+                exit
+        end
+        else khongnhanxet
+end;
+
+procedure ktdokho;
+begin
+        if dokho='1' then tg:=170
+        else if dokho='2' then tg:=150
+        else if dokho='3' then tg:=110
+        else if dokho='4' then tg:=60
+        else if dokho='5' then tg:=30
+        else if dokho='6' then tg:=15;
+        delay(tg)
+end;
+
+procedure hd;
+begin
+        clrscr; diem:=0; chu:='X'; textcolor(15); tl:=false;
+        if lang='e' then SetConsoleTitle('The SNAKE GAME[v1.1 Beta]: In Gameplay')
+        else SetConsoleTitle('Game RAN SAN MOI [v1.1 Beta]: Dang choi');
+        randomize;
+        repeat
+                x:=random(75); y:=random(22);
+                  tx:=random(75);ty:=random(22);
+                until (x>3) and (x<78) and (y>2) and (y<23)
+                and (tx>3) and (ty>2) and (tx<78) and (ty>2) and (ty<23);
+                repeat mau:=random(15); until mau>0;
+        ve; a:=' ';
+        while (x>3) and (x<78) and (y>2) and (y<23) do
+        begin
+                if keypressed then a:=readkey;
+                case a of
+                        'd':begin
+                                gotoxy(x,y);
+                                write(' ');
+                                inc(x);
+                                chu:='>';
+                            end;
+                        'a':begin
+                                gotoxy(x,y);
+                                write(' ');
+                                dec(x);
+                                chu:='<';
+                            end;
+                        'w':begin
+                                gotoxy(x,y);
+                                write(' ');
+                                dec(y);
+                                chu:='^';
+                            end;
+                        's':begin
+                                gotoxy(x,y);
+                                write(' ');
+                                inc(y);
+                                chu:='Y';
+                            end
+                end;
+                textcolor(mau);
+                gotoxy(tx,ty); write('O');
+                textcolor(white);
+                gotoxy(70,24); write('Diem: ',diem);
+                gotoxy(x,y);
+                write(chu);
+                ktdokho;
+                if (x=tx) and (y=ty) then
+                begin
+                        inc(diem);
+                        repeat
+                        tx:=random(75);ty:=random(22);
+                        until (tx>3) and (tx<78) and (ty>2) and (ty<23);
+                        repeat
+                        mau:=random(15);
+                        until mau>0;
+                        gotoxy(tx,ty); write('O');
+                        textcolor(white);
+                        gotoxy(70,24); write('Diem: ',diem);
+                        gotoxy(x,y); write(chu);
+                end;
+        end;
+end;
+
+procedure huongdan;
+begin
+        clrscr; key:=' ';
+        if lang='e' then
+        SetConsoleTitle('The SNAKE GAME: Instructions')
+        else SetConsoleTitle('Game RAN SAN MOI: Huong dan');
+        gotoxy(15,5); textcolor(9);
+        if lang='e' then
+        write('The SNAKE GAME')
+        else write('Tro choi: RAN SAN MOI');
+        gotoxy(15,7); textcolor(15);
+        if lang='e' then
+        write('Instructions:')
+        else write('Huong dan:');
+        gotoxy(15,8);
+        if lang='e' then
+        write('Press A to turn left')
+        else write('Nhan A de sang trai');
+        gotoxy(15,9);
+        if lang='e' then
+        write('Press D to turn right')
+        else write('Nhan D de sang phai');
+        gotoxy(15,10);
+        if lang='e' then
+        write('Press S to go down')
+        else write('Nhan S de di xuong');
+        gotoxy(15,11);
+        if lang='e' then
+        write('Press W to go on')
+        else write('Nhan W de di len');
+        gotoxy(15,12);
+        if lang='e' then
+        write('Press any other key to pause the game')
+        else write('Nhan bat ki phim khac de tam dung tro choi');
+        gotoxy(15,14); textcolor(9);
+        if lang='e' then
+        write('Press ENTER to start the game...')
+        else write('Nhan ENTER de bat dau choi...');
+        repeat
+        if keypressed then key:=readkey;
+        if key=chr(13) then hd
+        until key=chr(13);
+end;
+
+procedure gt;
+begin
+        if lang='e' then
+        SetConsoleTitle('The SNAKE GAME [v1.1 Beta]: Menu')
+        else SetConsoleTitle('Game RAN SAN MOI [v1.1 Beta]: Menu');
+        if tl=false then lc:='3' else lc:=' ';
+        clrscr;
+        gotoxy(10,3);
+        if lang='e' then
+        write('Welcome ',ten,' to...')
+        else write('Chao mung ban ',ten,' den voi...');
+        gotoxy(15,5); textcolor(green);
+        if lang='e' then
+        write('The SNAKE GAME')
+        else write('Tro choi: RAN SAN MOI');
+        gotoxy(15,7); textcolor(10);
+        if lang='e' then
+        write('1. Start the game')
+        else write('1. Bat dau tro choi');
+        gotoxy(15,8); textcolor(9);
+        if lang='e' then
+        write('2. Read the instructions and start the game')
+        else write('2. Doc huong dan va bat dau tro choi');
+        gotoxy(15,9); textcolor(15);
+        if lang='e' then
+        write('3. Game settings')
+        else write('3. Thiet lap tro choi');
+        gotoxy(15,10); textcolor(15);
+        if lang='e' then
+        write('4. About game')
+        else write('4. Ve tro choi');
+        gotoxy(15,11); textcolor(4);
+        if lang='e' then
+        write('5. Exit')
+        else write('5. Thoat');
+        gotoxy(15,13);
+        if lang='e' then
+        write('Input your selection:')
+        else write('Nhap lua chon:');
+        repeat
+        if keypressed then lc:=readkey;
+        case lc of
+                '1':hd;
+                '2':huongdan;
+                '3':
+                begin
+                        lc:=' ';
+                        if lang='e' then
+                        SetConsoleTitle('The SNAKE GAME: --GAME SETTINGS--')
+                        else SetConsoleTitle('Tro choi RAN SAN MOI: --THIET LAP GAME--');;
+                        clrscr;
+                        gotoxy(15,5); textcolor(9);
+                        if lang='e' then
+                        write('--GAME SETTINGS--')
+                        else write('--THIET LAP TRO CHOI--');
+                        gotoxy(10,23); textcolor(15);
+                        if lang='e' then
+                        write('1: Very easy, 2: Easy, 3: Average, 4: Hard, 5: Very hard, 6: HELL')
+                        else write('1: Rat de, 2: De, 3: Trung binh, 4: Kho, 5: Rat kho, 6: HELL');
+                        gotoxy(15,7); textcolor(15);
+                        if lang='e' then
+                        write('Difficulty?')
+                        else write('Do kho?');
+                        repeat
+                        if keypressed then lc:=readkey;
+                        case lc of
+                                '1':dokho:='1';
+                                '2':dokho:='2';
+                                '3':dokho:='3';
+                                '4':dokho:='4';
+                                '5':dokho:='5';
+                                '6':dokho:='6';
+                        end;
+                        until (lc='1') or (lc='2') or (lc='3')
+                        or (lc='4') or (lc='5') or (lc='6');
+                        gotoxy(15,9);
+                        if lang='e' then
+                        write('You have selected: ')
+                        else write('Ban da chon: ');
+                        if dokho='1' then
+                        begin
+                                textcolor(9);
+                                if lang='e' then
+                                write('Very easy')
+                                else write('Rat de')
+                        end
+                        else if dokho='2' then
+                        begin
+                                textcolor(1);
+                                if lang='e' then
+                                write('Easy')
+                                else write('De')
+                        end
+                        else if dokho='3' then
+                        begin
+                                textcolor(14);
+                                if lang='e' then
+                                write('Average')
+                                else write('Trung binh')
+                        end
+                        else if dokho='4' then
+                        begin
+                                textcolor(4);
+                                if lang='e' then
+                                write('Hard')
+                                else write('Kho')
+                        end
+                        else if dokho='5' then
+                        begin
+                                textcolor(12);
+                                if lang='e' then
+                                write('Very hard')
+                                else write('Rat kho')
+                        end
+                        else if dokho='6' then
+                        begin
+                                textcolor(5);
+                                write('HELL')
+                        end;
+                        gotoxy(15,10);
+                        textcolor(15);
+                        if lang='e' then
+                        write('Returning to menu...')
+                        else write('Dang quay lai menu...');
+                        delay(2000); tl:=true;
+                        gt
+                end;
+                '4':
+                begin
+                        if lang='e' then
+                        SetConsoleTitle('The SNAKE GAME [v1.1 Beta]: About game')
+                        else SetConsoleTitle('Tro choi RAN SAN MOI [v1.1 Beta]: Ve game');
+                        clrscr; key:=' ';
+                        gotoxy(15,5); textcolor(green);
+                        if lang='e' then
+                        write('The SNAKE GAME')
+                        else write('Tro choi: RAN SAN MOI');
+                        gotoxy(15,7); textcolor(15);
+                        if lang='e' then
+                        write('If you have comment, contributions')
+                        else write('Neu co y kien, dong gop cho game,');
+                        gotoxy(15,8);
+                        if lang='e' then
+                        write('for this game, please contact:')
+                        else write('vui long truy cap:');
+                        gotoxy(15,10);
+                        write('http://zipansion.com/2BmxK');
+                        gotoxy(15,12); textcolor(red);
+                        if lang='e' then
+                        write('THIS GAME HAD WRITTEN BY: bien2004official (Nguyen Van Bien)')
+                        else write('GAME NAY DUOC VIET BOI: bien2004official (Nguyen Van Bien)');
+                        gotoxy(15,14); textcolor(15);
+                        if lang='e' then
+                        write('GAME INFORMATION')
+                        else write('THONG TIN VE GAME');
+                        gotoxy(15,16); textcolor(yellow);
+                        if lang='e' then
+                        write('Version: 1.1 (Beta)')
+                        else write('Phien ban: 1.1 (Beta)');
+                        gotoxy(15,18); textcolor(15);
+                        if lang='e' then
+                        write('Press ENTER to return to menu...')
+                        else write('Nhan ENTER de quay lai menu...');
+                        repeat
+                                if keypressed then key:=readkey;
+                                case key of chr(13):gt;
+                                end;
+                        until key=chr(13);
+                end;
+                '5':thoat;
+
+        end;
+        until (lc='1') or (lc='2') or (lc='3') or (lc='4') or (lc='5')
+end;
+
+procedure gameover;
+begin
+        clrscr; tl:=true; lc:=' ';
+        if lang='e' then
+        SetConsoleTitle('The SNAKE GAME [v1.1 Beta]: --GAME OVER--')
+        else SetConsoleTitle('Game RAN SAN MOI [v1.1 Beta]: --TRO CHOI KET THUC--');
+        gotoxy(15,5);
+        if lang='e' then
+        write('--GAME OVER--')
+        else write('--TRO CHOI KET THUC--');
+        gotoxy(5,6);
+        ktdiem;
+        gotoxy(15,8);
+        textcolor(9);
+        if lang='e' then
+        write('1. Play again')
+        else write('1. Choi lai');
+        gotoxy(15,9);
+        textcolor(4);
+        if lang='e' then
+        write('2. Return to menu')
+        else write('2. Quay ve menu');
+        gotoxy(15,10);
+        textcolor(15);
+        if lang='e' then
+        write('Input your selection:')
+        else write('Nhap lua chon:');
+        repeat
+        if keypressed then lc:=readkey;
+        case lc of
+                '1':hd;
+                '2':gt;
+        end;
+        until (lc='1') or (lc='2');
+end;
+
+procedure nhap;
+begin
+        SetConsoleTitle('The SNAKE GAME / Game RAN SAN MOI [v1.1 Beta]');
+        gotoxy(10,5);
+        write('Select language / Chon ngon ngu: ');
+        gotoxy(10,6);
+        write('E: English / Tieng Anh;  V: Vietnamese / Tieng Viet');
+        repeat
+        if keypressed then lc:=readkey;
+        case lc of
+                'E','e':
+                begin
+                        lang:='e';
+                        SetConsoleTitle('The SNAKE GAME [v1.1 Beta]: Input personal informations');
+                end;
+                'V','v':
+                begin
+                        lang:='v';
+                        SetConsoleTitle('Game RAN SAN MOI [v1.1 Beta]: Nhap thong tin ban than');
+                end;
+        end;
+        until (lang='e') or (lang='v');
+        clrscr;
+        gotoxy(10,5);
+        if lang='e' then
+        write('Please input personal informations: ')
+        else write('Yeu cau nhap thong tin ban than: ');
+        gotoxy(15,7);
+        if lang='e' then
+        write('Type your name: ')
+        else write('Nhap ten ban: ');
+        readln(ten);
+        gotoxy(15,8);
+        if lang='e' then write('Type your old: ')
+        else write('Nhap tuoi ban: ');
+        readln(tuoi);
+        tl:=false;
+        gt
+end;
+
+begin
+        clrscr; cursoroff;
+        nhap;
+        repeat gameover until false;
+end.
